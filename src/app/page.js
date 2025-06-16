@@ -1,15 +1,15 @@
-import { getProducts, getBanners } from "../../src/app/lib/api";
-import ProductCard from "../../src/app/components/ProductCard";
-import Footer from "../../src/app/components/Footer";
+import { getProducts } from "./lib/api";
+import ProductCard from "./components/ProductCard";
+import Footer from "./components/Footer";
 import NavBar from './components/NavBar';
 import Image from 'next/image';
 
+export const dynamic = 'force-static';
+export const revalidate = 600;
+
 export default async function Home() {
   try {
-    const [products, banners] = await Promise.all([
-      getProducts(),
-      getBanners()
-    ]);
+    const products = await getProducts();
 
     return (
       <div className="min-h-screen flex flex-col">
@@ -32,7 +32,7 @@ export default async function Home() {
           <main className="flex-grow">
             {/* Featured Products Section */}
             <section className="max-w-7xl mx-auto px-4 py-12">
-              <div className=" mb-12">
+              <div className="mb-12">
                 <h2 className="text-3xl font-bold mb-4">MORE VALUE DEALS</h2>
                 <div className="border-b-2 border-gray-800 w-full mx-auto"></div>
               </div>
@@ -54,6 +54,7 @@ export default async function Home() {
       </div>
     );
   } catch (error) {
+    console.error('Error in Home page:', error);
     return (
       <div className="min-h-screen p-8 pb-20">
         <div className="text-center">
